@@ -1,14 +1,19 @@
 const express = require('express');
 const colors = require('colors');
 require('dotenv').config();
+const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
 
-
-
+app.use(express.json())
+app.use(cors());
 app.get('/', async(req, res)=>{
     res.send('Hello ecommerce')
 })
+
+const authRoute = require('./routes/auth.route.js')
+app.use('/api/auth',authRoute);
+
 
 
 
