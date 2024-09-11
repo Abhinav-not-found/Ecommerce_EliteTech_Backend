@@ -6,7 +6,6 @@ const bcryptjs = require('bcryptjs');
 router.get('/', (req, res) => {
     res.send('auth route welcome');
 });
-
 router.post('/register', async(req, res) => {
     const {name,email,password} = req.body;
     try {
@@ -28,6 +27,13 @@ router.post('/register', async(req, res) => {
 router.post('/login', (req, res) => {
     
 });
-
+router.get('/getAllUsers',async (req, res) => {
+    try {
+        const getUsers = await userModel.find();
+        return res.status(200).json(getUsers);
+    } catch (error) {
+        
+    }
+})
 
 module.exports = router;
