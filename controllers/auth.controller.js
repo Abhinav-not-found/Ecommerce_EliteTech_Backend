@@ -51,5 +51,39 @@ const login =  async(req, res) => {
         return res.status(500).json({ message:'Server side error' });
     }
 }
+const adminLogin = async(req, res) => {
+    const {email,password} = req.body;
+    try {
+        const user = await userModel.findOne({email: email});
+        if(!user){
+            return res.status(400).json({ message: 'Invalid email or password' });
+        }
+        if(user.role === 'user' || user.role === 'manager'){
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+        const matchPassword = await bcryptjs.compare(password, user.password);
+            if(!matchPassword) {
+                return res.status(400).json({ message: 'Invalid email or password' });
+            }
+            const token  = jwt.sign({id:user._id,email:user.email},JWT_SECRET,{expiresIn:'1h'})
 
-module.exports = { register, login, getAllUsers };
+            return res.status(200).json({message: 'Logged in successfully',token:token});
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message:'Server side error' });
+    }
+}
+const profile = async(req, res) => {
+    try {
+        const user = await userModel.findById(req.user.id);
+        if(!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        return res.status(200).json(user);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message:'Server side error' });
+    }
+}
+
+module.exports = { register, login, getAllUsers,adminLogin, profile };
