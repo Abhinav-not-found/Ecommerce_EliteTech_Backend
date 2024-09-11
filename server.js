@@ -14,7 +14,8 @@ app.get('/', async(req, res)=>{
 const authRoute = require('./routes/auth.route.js')
 app.use('/api/auth',authRoute);
 
-
+const productRoute = require('./routes/product.route.js')
+app.use('/api/product',productRoute)
 
 
 mongoose.connect(process.env.DB).then(() => {
