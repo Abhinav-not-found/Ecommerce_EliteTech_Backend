@@ -28,7 +28,7 @@ const register = async (req, res) => {
         return res.status(201).json({ message: 'User created successfully' });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: 'Server side error' });
+        return res.status(500).json({ message: 'server_error' });
     }
 };
 const login =  async(req, res) => {
@@ -44,7 +44,7 @@ const login =  async(req, res) => {
         }
         const token  = jwt.sign({id:user._id,email:user.email},JWT_SECRET,{expiresIn:'1h'})
 
-        return res.status(200).json({message: 'Logged in successfully',token:token});
+        return res.status(200).json({message: 'Logged in successfully',token:token,role:user.role});
 
     } catch (error) {
         console.log(error);
@@ -67,7 +67,7 @@ const adminLogin = async(req, res) => {
             }
             const token  = jwt.sign({id:user._id,email:user.email},JWT_SECRET,{expiresIn:'1h'})
 
-            return res.status(200).json({message: 'Logged in successfully',token:token});
+            return res.status(200).json({message: 'Logged in successfully',token:token, role:user.role});
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message:'Server side error' });

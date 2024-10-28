@@ -14,8 +14,17 @@ app.get('/', async(req, res)=>{
 const authRoute = require('./routes/auth.route.js')
 app.use('/api/auth',authRoute);
 
+const adminRoute = require('./routes/admin.route.js')
+app.use('/api/admin',adminRoute);
+
 const productRoute = require('./routes/product.route.js')
 app.use('/api/product',productRoute)
+
+const cartRoute = require('./routes/cart.route.js')
+app.use('/api/cart',cartRoute)
+
+const searchRoute = require('./routes/search.route.js')
+app.use('/api/search',searchRoute)
 
 
 mongoose.connect(process.env.DB).then(() => {
@@ -24,3 +33,7 @@ mongoose.connect(process.env.DB).then(() => {
 
 app.listen(process.env.PORT,() => {
     console.log(`Server is running on port ${process.env.PORT}`.bgCyan)});
+
+
+
+    

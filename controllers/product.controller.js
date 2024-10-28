@@ -1,19 +1,32 @@
 const productModel = require('../models/product.model.js')
+const cloudinary = require('../config/cloudinary');
 
-const create = async(req,res)=>{
-    const {name,description,image,price,category} = req.body
+const create = async (req, res) => {
+    const { name, description, price, category, sellerName } = req.body;
+    const image = req.file?.path; // Get the uploaded image URL from Cloudinary
+
     try {
-        if(!name || !description || !image || !price || !category){
+        if (!name || !description || !image || !price || !category || !sellerName) {
             return res.status(400).json({ message: 'All fields are required' });
         }
-        const product = new productModel({name:name,description:description,image:image,price:price,category:category});
+
+        // Create a new product with the Cloudinary image URL
+        const product = new productModel({
+            name: name,
+            description: description,
+            image: image, // Cloudinary image URL
+            price: price,
+            category: category,
+            sellerName: sellerName,
+        });
+
         const savedProduct = await product.save();
         res.status(201).json(savedProduct);
     } catch (error) {
-        console.log(error)
-        res.status(400).json({message:'Server Side Error'});
+        console.log(error);
+        res.status(400).json({ message: 'Server Side Error' });
     }
-}
+};
 
 const getAllProducts = async (req, res) => {
     try {
